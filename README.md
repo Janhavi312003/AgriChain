@@ -6,12 +6,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-### prerequisites:
+### Prerequisites:
 
 - Node.js v18 or higher
-
 - MetaMask or Coinbase Wallet
-
 - Base Sepolia testnet ETH for transactions
 
 ### Run Locally:
