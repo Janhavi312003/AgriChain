@@ -1,4 +1,4 @@
-## AgriChain
+# AgriChain
 
 AgriChain is a decentralized agricultural marketplace connecting farmers directly with buyers using blockchain technology. It ensures transparency, fair pricing, and secure transactions on the Base Sepolia testnet.
 
@@ -6,26 +6,26 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-# prerequisites
+### prerequisites
 Node.js v18 or higher
 
 MetaMask or Coinbase Wallet
 
 Base Sepolia testnet ETH for transactions
 
-# Run Locally
+### Run Locally
 Clone the repo and navigate to frontend:
 
 ```bash
 git clone https://github.com/yourusername/agrichain-project.git
 cd agrichain-project/frontend
 ```
-# Install dependencies:
+### Install dependencies:
 
 ```bash
 npm install
 ```
-# Create .env and add:
+### Create .env and add:
 
 ```bash
 text
@@ -33,7 +33,7 @@ NEXT_PUBLIC_CONTRACT_ADDRESS=your_deployed_contract_address
 NEXT_PUBLIC_PINATA_JWT=your_pinata_jwt_token
 NEXT_PUBLIC_PINATA_GATEWAY=your_pinata_gateway_url
 ```
-# Run dev server:
+### Run dev server:
 
 ```bash
 npm run dev
