@@ -1,58 +1,201 @@
-# AgriChain
+# AgriChain – Decentralized Agricultural Marketplace
 
-AgriChain is a decentralized agricultural marketplace connecting farmers directly with buyers using blockchain technology. It ensures transparency, fair pricing, and secure transactions on the Base Sepolia testnet.
+AgriChain is a decentralized agricultural marketplace built using blockchain technology that connects farmers directly with buyers. The platform aims to improve transparency, reduce dependency on intermediaries, and enable secure peer-to-peer transactions using cryptocurrency.
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+The application is deployed on the Base Sepolia testnet and integrates decentralized storage using IPFS.
 
-## Getting Started
+---
 
-### Prerequisites:
+# Problem Statement
 
-- Node.js v18 or higher
-- MetaMask or Coinbase Wallet
-- Base Sepolia testnet ETH for transactions
+Traditional agricultural marketplaces often involve multiple intermediaries, delayed payments, and limited transparency for farmers.
 
-### Run Locally:
-Clone the repo and navigate to frontend:
+AgriChain solves these issues by:
+- Connecting farmers directly with buyers
+- Providing transparent product listings
+- Enabling secure blockchain-based payments
+- Using decentralized storage for product data
+- Reducing dependence on centralized systems
+
+---
+
+# Features
+
+## Farmer Features
+- List agricultural products on the marketplace
+- Upload product images and metadata
+- Receive direct crypto payments from buyers
+- Manage product listings
+
+## Buyer Features
+- Browse available agricultural products
+- Purchase products using crypto wallet
+- View transparent product information
+- Interact directly with sellers
+
+## Blockchain Features
+- Smart contract-based product management
+- Transparent on-chain transactions
+- Decentralized storage using IPFS
+- Wallet authentication with MetaMask
+
+---
+
+# Tech Stack
+
+| Layer | Technology |
+|-------|-------------|
+| Frontend | Next.js + TypeScript |
+| Styling | Tailwind CSS |
+| Smart Contracts | Solidity |
+| Blockchain Network | Base Sepolia |
+| Web3 Integration | Ethers.js |
+| Wallet | MetaMask / Coinbase Wallet |
+| Storage | IPFS (Pinata) |
+
+---
+
+# Project Structure
 
 ```bash
-git clone https://github.com/yourusername/agrichain-project.git
-cd agrichain-project/frontend
+AgriChain/
+├── contracts/          # Solidity smart contracts
+├── frontend/           # Next.js frontend
+├── public/             # Static assets
+├── app/                # Next.js app router pages
+├── components/         # Reusable UI components
+└── package.json
 ```
-### Install dependencies:
+---
+# How AgriChain Works
+## High-Level Workflow
+- Farmer connects wallet using MetaMask
+- Product details and image are uploaded
+- Product image/metadata stored on IPFS via Pinata
+- Smart contract stores product reference and details
+- Buyers browse listed products
+- Buyer initiates blockchain transaction to purchase product
+- Payment is transferred securely through smart contract
+- Transaction becomes publicly verifiable on blockchain
+  
+## Smart Contract Responsibilities
 
+The Solidity smart contract handles:
+
+- Product registration
+- Product ownership tracking
+- Product purchase logic
+- Secure transaction handling
+- Blockchain-based transparency
+
+  ---
+  
+# Why IPFS?
+
+Large files like images are expensive to store directly on blockchain.
+
+IPFS is used because:
+
+- It provides decentralized storage
+- Reduces blockchain storage cost
+- Makes uploaded data tamper-resistant
+- Improves scalability
+
+Pinata is used as the IPFS gateway service.
+
+---
+
+# Wallet Integration
+
+The DApp integrates MetaMask and Coinbase Wallet for:
+
+- User authentication
+- Transaction signing
+- Blockchain interaction
+- Payment execution
+
+Ethers.js is used to:
+
+- Connect frontend with smart contracts
+- Read blockchain data
+- Send transactions
+- Handle smart contract interactions
+
+  ---
+  
+# Getting Started
+## Prerequisites
+- Node.js v18 or higher
+- MetaMask or Coinbase Wallet
+- Base Sepolia testnet ETH
+
+## Clone Repository
+```bash
+git clone https://github.com/Janhavi312003/AgriChain.git
+cd AgriChain/frontend
+```
+##Install Dependencies
 ```bash
 npm install
 ```
-### Create .env and add:
+## Configure Environment Variables
 
+Create a .env file and add:
 ```bash
-text
 NEXT_PUBLIC_CONTRACT_ADDRESS=your_deployed_contract_address
 NEXT_PUBLIC_PINATA_JWT=your_pinata_jwt_token
 NEXT_PUBLIC_PINATA_GATEWAY=your_pinata_gateway_url
 ```
-### Run dev server:
-
+## Run Development Server
 ```bash
 npm run dev
-# or
+
+or
+
 yarn dev
-# or
+
+or
+
 pnpm dev
-# or
+
+or
+
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
+```bash
+http://localhost:3000
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Deployment
+- Smart contracts deployed on Base Sepolia testnet
+- Frontend deployed on Vercel
+  
+# Live Demo
 
-## Learn More
+https://agri-chain-237kxxjmg-janhavis-projects-94ce3bb4.vercel.app/
+---
 
-To learn more about Next.js, take a look at the following resources:
+# Challenges Faced
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+During development, key challenges included:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Handling asynchronous blockchain transactions
+- Managing wallet connection states
+- Integrating IPFS uploads with frontend workflow
+- Smart contract deployment and testing
+- Handling transaction confirmation delays
+  
+  ---
+  
+# Learning Outcomes
+
+This project helped in understanding:
+
+- Solidity smart contract development
+- Blockchain transaction flow
+- IPFS decentralized storage
+- Web3 wallet integration
+- Frontend and blockchain interaction
+- Decentralized application architecture
