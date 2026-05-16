@@ -179,7 +179,7 @@ https://agri-chain-237kxxjmg-janhavis-projects-94ce3bb4.vercel.app/
 
 # Challenges Faced
 
-## During development, key challenges included:
+ During development, key challenges included:
 
 - Handling asynchronous blockchain transactions
 - Managing wallet connection states
@@ -191,7 +191,7 @@ https://agri-chain-237kxxjmg-janhavis-projects-94ce3bb4.vercel.app/
   
 # Learning Outcomes
 
-## This project helped in understanding:
+ This project helped in understanding:
 
 - Solidity smart contract development
 - Blockchain transaction flow
