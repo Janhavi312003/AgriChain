@@ -90,7 +90,7 @@ The Solidity smart contract handles:
 
   ---
   
-# Why IPFS?
+## Why IPFS?
 
 Large files like images are expensive to store directly on blockchain.
 
@@ -105,7 +105,7 @@ Pinata is used as the IPFS gateway service.
 
 ---
 
-# Wallet Integration
+## Wallet Integration
 
 The DApp integrates MetaMask and Coinbase Wallet for:
 
@@ -172,14 +172,14 @@ http://localhost:3000
 - Smart contracts deployed on Base Sepolia testnet
 - Frontend deployed on Vercel
   
-# Live Demo
+## Live Demo
 
 https://agri-chain-237kxxjmg-janhavis-projects-94ce3bb4.vercel.app/
 ---
 
 # Challenges Faced
 
-During development, key challenges included:
+## During development, key challenges included:
 
 - Handling asynchronous blockchain transactions
 - Managing wallet connection states
@@ -191,7 +191,7 @@ During development, key challenges included:
   
 # Learning Outcomes
 
-This project helped in understanding:
+## This project helped in understanding:
 
 - Solidity smart contract development
 - Blockchain transaction flow
