@@ -1,214 +1,187 @@
-# AgriChain – Decentralized Agricultural Marketplace
+# AgriChain
 
-AgriChain is a decentralized agricultural marketplace built using blockchain technology that connects farmers directly with buyers. The platform aims to improve transparency, reduce dependency on intermediaries, and enable secure peer-to-peer transactions using cryptocurrency.
+AgriChain is a decentralized agricultural marketplace where farmers list harvests and buyers purchase them directly with crypto. It combines a Next.js web app, a Solidity contract on Base Sepolia, IPFS storage, and optional AI-assisted produce analysis.
 
-The application is deployed on the Base Sepolia testnet and integrates decentralized storage using IPFS.
+> Built for learning and demonstration on the Base Sepolia testnet. It is not a production escrow or payment platform.
 
----
+## What problem does it solve?
 
-# Problem Statement
+Agricultural marketplaces can involve many intermediaries, making prices and payments difficult to track. AgriChain explores a direct marketplace model with transparent on-chain listings and purchases.
 
-Traditional agricultural marketplaces often involve multiple intermediaries, delayed payments, and limited transparency for farmers.
+## Features
 
-AgriChain solves these issues by:
-- Connecting farmers directly with buyers
-- Providing transparent product listings
-- Enabling secure blockchain-based payments
-- Using decentralized storage for product data
-- Reducing dependence on centralized systems
+### Farmers
 
----
+* Connect MetaMask or Coinbase Wallet.
+* Register a grower profile with name and location.
+* Upload a harvest image, quantity, price, and description.
+* Get optional Gemini suggestions for grade, freshness score, title, description, notes, and tags.
+* Review or edit every AI suggestion before publishing.
+* Store the harvest image and metadata on IPFS through Pinata.
+* Receive payment when a buyer purchases the harvest.
 
-# Features
+### Buyers
 
-## Farmer Features
-- List agricultural products on the marketplace
-- Upload product images and metadata
-- Receive direct crypto payments from buyers
-- Manage product listings
+* Browse harvests read from the smart contract.
+* View IPFS-hosted images and listing metadata.
+* Purchase an available harvest with Base Sepolia ETH.
+* See the purchase recorded on-chain.
 
-## Buyer Features
-- Browse available agricultural products
-- Purchase products using crypto wallet
-- View transparent product information
-- Interact directly with sellers
+## Important notes
 
-## Blockchain Features
-- Smart contract-based product management
-- Transparent on-chain transactions
-- Decentralized storage using IPFS
-- Wallet authentication with MetaMask
+* AI is assistive only; it does not guarantee produce quality and farmers can edit all generated content.
+* On purchase, the contract marks a harvest as sold and transfers the payment directly to the farmer. The current contract does not provide escrow, delivery tracking, refunds, or dispute resolution.
+* AI requests have an in-memory, per-wallet rate limit. It resets when the server restarts and should use persistent storage in production.
 
----
+## Tech stack
 
-# Tech Stack
+| Area         | Technology                          |
+| ------------ | ----------------------------------- |
+| Frontend     | Next.js 16, React 19, TypeScript    |
+| Styling      | Tailwind CSS, Framer Motion, Lucide |
+| Web3         | Wagmi, Viem, TanStack Query         |
+| Wallets      | MetaMask and Coinbase Wallet        |
+| Blockchain   | Solidity on Base Sepolia            |
+| Storage      | IPFS through Pinata                 |
+| AI           | Google Gemini vision API            |
+| Contact form | Web3Forms                           |
 
-| Layer | Technology |
-|-------|-------------|
-| Frontend | Next.js + TypeScript |
-| Styling | Tailwind CSS |
-| Smart Contracts | Solidity |
-| Blockchain Network | Base Sepolia |
-| Web3 Integration | Ethers.js |
-| Wallet | MetaMask / Coinbase Wallet |
-| Storage | IPFS (Pinata) |
+## Architecture
 
----
-
-# Project Structure
-
-```bash
-AgriChain/
-├── contracts/          # Solidity smart contracts
-├── frontend/           # Next.js frontend
-├── public/             # Static assets
-├── app/                # Next.js app router pages
-├── components/         # Reusable UI components
-└── package.json
+```text
+Farmer / Buyer
+      |
+      v
+Next.js frontend
+  |          |             |
+  v          v             v
+Base Sepolia  Pinata/IPFS   Server API route -> Google Gemini
+smart contract
 ```
----
-# How AgriChain Works
-## High-Level Workflow
-- Farmer connects wallet using MetaMask
-- Product details and image are uploaded
-- Product image/metadata stored on IPFS via Pinata
-- Smart contract stores product reference and details
-- Buyers browse listed products
-- Buyer initiates blockchain transaction to purchase product
-- Payment is transferred securely through smart contract
-- Transaction becomes publicly verifiable on blockchain
-  
-## Smart Contract Responsibilities
 
-The Solidity smart contract handles:
+The app uploads an image to IPFS first, then stores JSON metadata containing the image CID. The metadata CID is saved in the smart contract, keeping large files off-chain while preserving an on-chain reference.
 
-- Product registration
-- Product ownership tracking
-- Product purchase logic
-- Secure transaction handling
-- Blockchain-based transparency
+## Project structure
 
-  ---
-  
-## Why IPFS?
+```text
+frontend/
+  src/
+    app/
+      api/analyze-produce/   # Server-side Gemini endpoint
+      about/                 # About page
+      contact/               # Contact form
+      dashboard/             # Marketplace and listing flow
+    components/              # Shared UI components
+    lib/
+      contract.ts            # Contract address and ABI
+      ipfs.ts                # Pinata/IPFS helpers
+      wagmi.ts               # Wallet and Base Sepolia configuration
+  public/
+  .env.example
+  package.json
 
-Large files like images are expensive to store directly on blockchain.
+../contracts/src/AgriChain.sol  # Marketplace smart contract
+```
 
-IPFS is used because:
+## Smart-contract flow
 
-- It provides decentralized storage
-- Reduces blockchain storage cost
-- Makes uploaded data tamper-resistant
-- Improves scalability
+1. A farmer calls `registerFarmer(name, location)` once.
+2. The farmer uploads the harvest image and metadata to IPFS.
+3. The farmer calls `uploadHarvest(cropName, quantity, pricePerUnit, metadataCid)`.
+4. Buyers read listings with `getAllHarvests()`.
+5. A buyer calls `purchaseHarvest(harvestId)` and sends ETH equal to or greater than `quantity x pricePerUnit`.
+6. The contract marks the harvest as sold and transfers the payment to the farmer.
 
-Pinata is used as the IPFS gateway service.
+## Getting started
 
----
+### Prerequisites
 
-## Wallet Integration
+* Node.js 18+
+* npm
+* MetaMask or Coinbase Wallet
+* Base Sepolia ETH for test transactions
+* A deployed AgriChain contract on Base Sepolia
+* Pinata account
+* Google AI Studio API key (optional)
+* Web3Forms access key (optional)
 
-The DApp integrates MetaMask and Coinbase Wallet for:
+### Install and run
 
-- User authentication
-- Transaction signing
-- Blockchain interaction
-- Payment execution
-
-Ethers.js is used to:
-
-- Connect frontend with smart contracts
-- Read blockchain data
-- Send transactions
-- Handle smart contract interactions
-
-  ---
-  
-# Getting Started
-## Prerequisites
-- Node.js v18 or higher
-- MetaMask or Coinbase Wallet
-- Base Sepolia testnet ETH
-
-## Clone Repository
 ```bash
 git clone https://github.com/Janhavi312003/AgriChain.git
 cd AgriChain/frontend
-```
-##Install Dependencies
-```bash
 npm install
+npm run dev
 ```
-## Configure Environment Variables
 
-Create a `.env` or `.env.local` file (see `.env.example`) and add:
-```bash
+Open `http://localhost:3000`.
+
+## Environment variables
+
+Copy `.env.example` to `.env.local` and fill in the values:
+
+```env
+# Base Sepolia smart contract
 NEXT_PUBLIC_CONTRACT_ADDRESS=your_deployed_contract_address
+
+# Pinata IPFS
 NEXT_PUBLIC_PINATA_JWT=your_pinata_jwt_token
 NEXT_PUBLIC_PINATA_GATEWAY=your_pinata_gateway_url
+
+# Google Gemini: server-side only, never use NEXT_PUBLIC_
 GEMINI_API_KEY=your_gemini_api_key_here
+
+# Web3Forms contact form
+NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key_here
+
+# Optional production site URL
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
 ```
 
-### Gemini API key (AI produce analysis)
+> Never commit real keys. Gemini is server-side only. The current Pinata upload flow exposes its token to the browser, so use a restricted Pinata key and move uploads to a server route before a production deployment.
 
-AgriChain uses Google Gemini vision to suggest a quality grade and listing description when a farmer selects a crop image. Analysis runs **server-side only** via `/api/analyze-produce` — the key must never use a `NEXT_PUBLIC_` prefix.
+## Commands
 
-1. Open [Google AI Studio](https://aistudio.google.com/apikey)
-2. Create an API key
-3. Set `GEMINI_API_KEY` in `.env` / `.env.local`
-4. Restart the Next.js dev server
-
-If the key is missing or the call fails, farmers can still complete listings manually — AI is assistive only.
-
-## Run Development Server
 ```bash
-npm run dev
-
-or
-
-yarn dev
-
-or
-
-pnpm dev
-
-or
-
-bun dev
+npm run dev      # Start the development server
+npm run build    # Create a production build
+npm run start    # Serve the production build
 ```
 
-Open:
-```bash
-http://localhost:3000
-```
+## Live demo
 
-# Deployment
-- Smart contracts deployed on Base Sepolia testnet
-- Frontend deployed on Vercel
-  
-## Live Demo
+Open AgriChain
 
-https://agri-chain-237kxxjmg-janhavis-projects-94ce3bb4.vercel.app/
----
+## Interview talking points
 
-# Challenges Faced
+### Why blockchain?
 
- During development, key challenges included:
+It creates a tamper-evident record of farmer registrations, harvest listings, and purchases.
 
-- Handling asynchronous blockchain transactions
-- Managing wallet connection states
-- Integrating IPFS uploads with frontend workflow
-- Smart contract deployment and testing
-- Handling transaction confirmation delays
-  
-  ---
-  
-# Learning Outcomes
+### Why IPFS?
 
- This project helped in understanding:
+Images are expensive to store on-chain. IPFS stores them off-chain while the smart contract stores their CID reference.
 
-- Solidity smart contract development
-- Blockchain transaction flow
-- IPFS decentralized storage
-- Web3 wallet integration
-- Frontend and blockchain interaction
-- Decentralized application architecture
+### Why Wagmi and Viem?
+
+Wagmi supplies React hooks for wallet and contract state, while Viem handles typed Ethereum and RPC interaction.
+
+### How is AI used safely?
+
+Gemini returns structured suggestions server-side. Farmers can edit them, and manual listing works if AI is unavailable.
+
+### How are payments handled?
+
+The buyer sends ETH with `purchaseHarvest`; the contract validates the listing, marks it sold, and sends payment directly to the farmer.
+
+### What would you improve for production?
+
+Add escrow and disputes, delivery confirmation, moderation, server-side IPFS uploads, persistent rate limiting, automated tests, a security audit, and search/indexing.
+
+## Learning outcomes
+
+AgriChain demonstrates Solidity development, wallet integration, contract reads and writes, IPFS storage, AI API integration, server-side API design, and modern React application development.
+
+## License
+
+For educational and portfolio use.
