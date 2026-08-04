@@ -150,7 +150,7 @@ npm run start    # Serve the production build
 
 ## Live demo
 
-Open AgriChain
+Open https://agri-chain-seven.vercel.app/
 
 ## Interview talking points
 
