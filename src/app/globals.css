@@ -1,34 +1,347 @@
 @import "tailwindcss";
 
 :root {
-  --primary-green: #6BBE45;
-  --dark-green: #558B37;
-  --light-gray: #F5F5F5;
-  --brown: #8B4513;
+  /* Bright editorial landing palette */
+  --cream: #faf7ef;
+  --fresh-green: #3ca345; /* vivid spinach green — navbar glass, accents */
+  /* Solid fills needing cream text: #3CA345+cream fails AA (~3.01:1) → use deeper green */
+  --fresh-green-solid: #247a30; /* cream on this ≈ 5.03:1 PASS AA */
+  --deep-forest: #1f3d1a;
+  --sprout-light: #eaf5e2;
+  --harvest-gold: #c99a3e;
+
+  /* Aliases used by landing components */
+  --soil-black: var(--cream); /* legacy name → bright page ground */
+  --parchment: var(--cream);
+  --parchment-dim: #5a6b52; /* muted text on cream — see contrast note below */
+  --moss: var(--deep-forest);
+  --ledger-sage: var(--sprout-light);
+
+  /*
+   * Contrast (WCAG AA body 4.5:1):
+   * deep-forest #1F3D1A on cream #FAF7EF → ~11.27:1 PASS
+   * deep-forest on sprout-light #EAF5E2 → ~10.72:1 PASS
+   * cream on fresh-green #6BBE45 → ~2.16:1 FAIL → CTA/ticker use deep-forest text on #6BBE45 (~5.21:1 PASS)
+   * muted on cream: #5A6B52 on #FAF7EF → check below
+   */
+
+  /* Legacy dashboard tokens */
+  --emerald-deep: #041a12;
+  --emerald: #0b3d2e;
+  --emerald-mid: #145c43;
+  --forest: #0f4d38;
+  --leaf: #3ca345;
+  --mint: #a8f0c8;
+  --sage: #d4efe0;
+  --gold: #d4af37;
+  --gold-soft: #f0d78c;
+  --soil: #6b4423;
+  --ink: #1f3d1a;
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-light: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(212, 175, 55, 0.22);
+  --shadow-soft: 0 20px 50px rgba(31, 61, 26, 0.08);
+  --shadow-float: 0 28px 80px rgba(31, 61, 26, 0.12);
+  --radius-card: 28px;
+  --font-display: var(--font-fraunces), "Fraunces", Georgia, serif;
+  --font-body: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+  --sidebar-w: 88px;
+}
+
+@theme inline {
+  --color-cream: var(--cream);
+  --color-fresh-green: var(--fresh-green);
+  --color-fresh-green-solid: var(--fresh-green-solid);
+  --color-deep-forest: var(--deep-forest);
+  --color-sprout-light: var(--sprout-light);
+  --color-harvest-gold: var(--harvest-gold);
+  --color-soil-black: var(--cream);
+  --color-parchment: var(--cream);
+  --color-parchment-dim: var(--parchment-dim);
+  --color-moss: var(--deep-forest);
+  --color-ledger-sage: var(--sprout-light);
+  --color-emerald-deep: var(--emerald-deep);
+  --color-emerald: var(--emerald);
+  --color-emerald-mid: var(--emerald-mid);
+  --color-forest: var(--forest);
+  --color-leaf: var(--leaf);
+  --color-mint: var(--mint);
+  --color-sage: var(--sage);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-soil: var(--soil);
+  --color-ink: var(--ink);
+  --font-display: var(--font-fraunces), "Fraunces", Georgia, serif;
+  --font-body: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  @apply bg-gray-50 text-gray-900;
+  margin: 0;
+  color: var(--moss);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  background: var(--parchment);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Custom scrollbar */
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.font-mono,
+.font-ledger {
+  font-family: var(--font-mono);
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100;
+  background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 rounded-full;
+  background: color-mix(in srgb, var(--moss) 55%, transparent);
+  border-radius: 999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500;
+/* Landing CTA — harvest gold as highlight only */
+.btn-harvest {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  /* cream-on-#3CA345 fails AA (~3.01:1) — deep-forest text on brand green PASS */
+  background: var(--fresh-green);
+  color: var(--deep-forest);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.9rem 1.75rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-/* Animations */
+.btn-harvest:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.btn-harvest:focus-visible {
+  outline: 2px solid var(--deep-forest);
+  outline-offset: 3px;
+}
+
+/* Legacy dashboard button styles */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--leaf) 0%, var(--emerald-mid) 55%, var(--emerald) 100%);
+  color: white;
+  font-family: var(--font-body);
+  font-weight: 600;
+  padding: 0.9rem 1.55rem;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow:
+    0 14px 36px rgba(11, 61, 46, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s ease;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 18px 44px rgba(11, 61, 46, 0.42);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--leaf);
+  outline-offset: 3px;
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--emerald);
+  font-family: var(--font-body);
+  font-weight: 600;
+  padding: 0.9rem 1.55rem;
+  border-radius: 20px;
+  border: 1px solid rgba(11, 61, 46, 0.12);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 0.28s ease,
+    border-color 0.28s ease,
+    background 0.28s ease;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--emerald);
+  outline-offset: 3px;
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  color: var(--emerald-deep);
+  font-family: var(--font-body);
+  font-weight: 700;
+  padding: 0.9rem 1.55rem;
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.35);
+  cursor: pointer;
+  transition: transform 0.28s ease;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-gold:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.card {
+  padding: 1.5rem;
+  border-radius: var(--radius-card);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.88), rgba(212, 239, 224, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+}
+
+.island-card {
+  border-radius: var(--radius-card);
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.78),
+    rgba(212, 239, 224, 0.42)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-float);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+}
+
+.island-card:hover {
+  transform: translateY(-10px) scale(1.015);
+  box-shadow:
+    0 36px 90px rgba(4, 26, 18, 0.25),
+    0 0 0 1px rgba(212, 175, 55, 0.25);
+}
+
+.gold-ring {
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.35),
+    0 20px 50px rgba(4, 26, 18, 0.2);
+}
+
+.glass-panel {
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.72),
+    rgba(212, 239, 224, 0.35)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(22px) saturate(1.35);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-card);
+}
+
+.glass-dark {
+  background: linear-gradient(
+    160deg,
+    rgba(11, 61, 46, 0.88),
+    rgba(4, 26, 18, 0.92)
+  );
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-card);
+  color: white;
+}
+
+.input-field {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.9rem 1.1rem;
+  border-radius: 18px;
+  border: 1.5px solid rgba(11, 61, 46, 0.12);
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--ink);
+  font-family: var(--font-body);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--leaf);
+  box-shadow: 0 0 0 4px rgba(61, 214, 140, 0.18);
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -40,25 +353,133 @@ body {
   }
 }
 
-.fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--fresh-green);
+  color: var(--deep-forest);
+  font-family: var(--font-body);
+  font-weight: 500;
 }
 
-/* Button styles */
-.btn-primary {
-  @apply bg-[#6BBE45] hover:bg-[#558B37] text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed;
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
 }
 
-.btn-secondary {
-  @apply bg-white hover:bg-gray-50 text-gray-900 font-medium py-3 px-6 rounded-xl border-2 border-gray-200 transition-all duration-200 hover:border-[#6BBE45];
+/* Hero parallax layer */
+.hero-parallax-bg {
+  will-change: transform;
 }
 
-/* Card styles */
-.card {
-  @apply bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6;
+@media (prefers-reduced-motion: reduce) {
+  .hero-parallax-bg {
+    transform: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .ledger-ticker-track {
+    animation: none !important;
+    transform: none !important;
+  }
 }
 
-/* Input styles */
-.input-field {
-  @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#6BBE45] focus:outline-none transition-colors duration-200;
+/* Living Ledger ticker */
+.ledger-ticker {
+  overflow: hidden;
+  background: var(--fresh-green-solid);
+  color: var(--cream);
+}
+
+.ledger-ticker-track {
+  display: flex;
+  width: max-content;
+  gap: 0;
+  animation: ledger-scroll 48s linear infinite;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .ledger-ticker-track {
+    animation-duration: 56s;
+  }
+
+  .ledger-ticker {
+    font-size: 12px;
+  }
+}
+
+.ledger-ticker:hover .ledger-ticker-track {
+  animation-play-state: paused;
+}
+
+/* About page — soft ambient Vegetable3D drift */
+@keyframes about-veg-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-6deg);
+  }
+  50% {
+    transform: translate3d(-12px, 18px, 0) rotate(4deg);
+  }
+}
+
+@keyframes about-veg-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(8deg);
+  }
+  50% {
+    transform: translate3d(14px, -16px, 0) rotate(-4deg);
+  }
+}
+
+@keyframes about-veg-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-2deg) scale(1);
+  }
+  50% {
+    transform: translate3d(-8px, 10px, 0) rotate(6deg) scale(1.04);
+  }
+}
+
+.about-veg {
+  will-change: transform;
+}
+
+.about-veg--a {
+  animation: about-veg-drift-a 22s ease-in-out infinite;
+}
+
+.about-veg--b {
+  animation: about-veg-drift-b 28s ease-in-out infinite;
+}
+
+.about-veg--c {
+  animation: about-veg-drift-c 18s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-veg--a,
+  .about-veg--b,
+  .about-veg--c {
+    animation: none !important;
+  }
+}
+
+
+@keyframes ledger-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }

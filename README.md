@@ -140,12 +140,25 @@ npm install
 ```
 ## Configure Environment Variables
 
-Create a .env file and add:
+Create a `.env` or `.env.local` file (see `.env.example`) and add:
 ```bash
 NEXT_PUBLIC_CONTRACT_ADDRESS=your_deployed_contract_address
 NEXT_PUBLIC_PINATA_JWT=your_pinata_jwt_token
 NEXT_PUBLIC_PINATA_GATEWAY=your_pinata_gateway_url
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
+
+### Gemini API key (AI produce analysis)
+
+AgriChain uses Google Gemini vision to suggest a quality grade and listing description when a farmer selects a crop image. Analysis runs **server-side only** via `/api/analyze-produce` — the key must never use a `NEXT_PUBLIC_` prefix.
+
+1. Open [Google AI Studio](https://aistudio.google.com/apikey)
+2. Create an API key
+3. Set `GEMINI_API_KEY` in `.env` / `.env.local`
+4. Restart the Next.js dev server
+
+If the key is missing or the call fails, farmers can still complete listings manually — AI is assistive only.
+
 ## Run Development Server
 ```bash
 npm run dev

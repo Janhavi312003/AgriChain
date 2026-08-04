@@ -7,11 +7,13 @@ export function PrefetchLink({
   href,
   children,
   prefetch = true,
+  className = 'text-ink/70 hover:text-forest transition-colors duration-200',
   ...props
 }: {
   href: string
   children: React.ReactNode
   prefetch?: boolean
+  className?: string
   [key: string]: any
 }) {
   const [shouldPrefetch, setShouldPrefetch] = useState(prefetch)
@@ -21,8 +23,8 @@ export function PrefetchLink({
       {...props}
       href={href}
       prefetch={shouldPrefetch}
-      onMouseEnter={() => setShouldPrefetch(true)} // Prefetch when user hovers
-      className="text-gray-700 hover:text-[#6BBE45] transition-colors duration-200"
+      onMouseEnter={() => setShouldPrefetch(true)}
+      className={className}
     >
       {children}
     </Link>
